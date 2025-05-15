@@ -1,28 +1,28 @@
-### 환경 설정
 @baseUrl = http://localhost:3001
-
+@userId = 6825d71ff2466726ac494222
 ### 1. 사용자 생성 테스트
 POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-    "email": "test2@example.com",
-    "password": "test1234",
-    "name": "테스트 유저2",
+    "role": "ADMIN",
+    "email": "admin@example.com",
+    "password": "admin",
+    "name": "운영자",
     "phone": "010-1234-5678",
     "age": 25
 }
-
+// admin 계정: admin@example.com | admin
 ### 2. 모든 사용자 조회
 GET {{baseUrl}}/users
 
 ### 3. 특정 사용자 조회
 # {userId} -> user 'user _id'
-GET {{baseUrl}}/users/{userId}
+GET {{baseUrl}}/users/{{userId}}
 
 ### 4. 사용자 정보 수정
 # 아래 {userId}는 사용자 생성 후 받은 ID로 교체해야 합니다
-PUT {{baseUrl}}/users/{userId}
+PUT {{baseUrl}}/users/{{userId}}
 Content-Type: application/json
 
 {
@@ -31,8 +31,7 @@ Content-Type: application/json
 }
 
 ### 5. 사용자 삭제
-# 아래 {userId}는 사용자 생성 후 받은 ID로 교체해야 합니다
-DELETE {{baseUrl}}/users/{userId}
+DELETE {{baseUrl}}/users/6825d6baf2466726ac49421c
 
 ### 6. 잘못된 이메일 형식으로 사용자 생성 테스트
 POST {{baseUrl}}/users

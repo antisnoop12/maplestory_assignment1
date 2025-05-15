@@ -9,12 +9,12 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { UsersService } from '@user/service/user.service';
+import { UserService } from '@user/service/user.service';
 import { UserDto } from '@user/dto/user.dto';
 
 @Controller('users') // 'users' 경로로 시작하는 엔드포인트 처리
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserService) {}
 
   // 새 사용자 생성 (회원가입)
   @Post()

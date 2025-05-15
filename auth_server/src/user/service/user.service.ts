@@ -6,7 +6,7 @@ import { UserDto } from '@user/dto/user.dto';
 import { PasswordUtil } from '@utils/util.password';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   // 사용자 생성

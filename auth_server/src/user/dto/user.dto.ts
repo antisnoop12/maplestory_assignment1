@@ -7,9 +7,12 @@ import {
   Max,
   MinLength,
   IsNotEmpty,
+  IsEnum,
+  IsOptional,
 } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 import { PasswordUtil } from '@utils/util.password';
+import { UserRole } from '@user/role/role.enum';
 
 export class UserDto {
   private _email: string;
@@ -68,4 +71,9 @@ export class UserDto {
   set age(value: number) {
     this._age = value;
   }
+
+  // Role
+  @IsEnum(UserRole)
+  @IsOptional()
+  role?: UserRole;
 }

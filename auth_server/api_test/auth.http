@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3001
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoiNjgyNWQ3MWZmMjQ2NjcyNmFjNDk0MjIyIiwiaWF0IjoxNzQ3MzExNTM0LCJleHAiOjE3NDczMTUxMzR9.et-EOrUBqltgVFvQ4YDwlJ8ZGr-lnzEcGj57qWkOJzM
+
+### 1. 로그인
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin"
+}
+
+### 3. 접근 권한 확인
+GET {{baseUrl}}/admin
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+
+}
+
+//### 2. 토큰 사용
+//@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwic3ViIjoiNjgyNTU3M2IxMmMwNDA5YjExYWJhNDA5IiwiaWF0IjoxNzQ3Mjk5NTAxLCJleHAiOjE3NDczMDMxMDF9.VEob0mq5Wx9sWBih-UtBuAvgxkUYpG0LI4xBvWsrlck
+
+//GET {{baseUrl}}/auth/profile
+//Authorization: Bearer {{token}}
