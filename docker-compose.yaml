@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+  auth_server:
+    build: ./auth_server
+    container_name: auth_server
+    restart: always
+    ports:
+      - '3002:3002'
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/auth_db
+    depends_on:
+      - mongo
+
+  event_server:
+    build: ./event_server
+    container_name: event_server
+    restart: always
+    ports:
+      - '3003:3003'
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/auth_db
+    depends_on:
+      - mongo
+
+  gateway_server:
+    build: ./gateway_server
+    container_name: gateway_server
+    restart: always
+    ports:
+      - '3001:3001'
+    environment:
+      - AUTH_SERVER_URL=http://auth_server:3002
+      - EVENT_SERVER_URL=http://event_server:3003
+    depends_on:
+      - auth_server
+      - event_server
+
+volumes:
+  mongo_data:

@@ -1,66 +1,87 @@
 @baseUrl = http://localhost:3001/maple
 @userId = 682556f012c0409b11aba404
-@tokenAdmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoiNjgyOWQ1NjhhMWQ0YTVhOGZiNGNiNzRmIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzQ3NTcyMTk2LCJleHAiOjE3NDc1NzU3OTZ9.8j495BTvg4sFeMgjsftjIGioDvFUgtVlbwNYJYmECZs
-@tokenUser1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAbmV4b24uY29tIiwic3ViIjoiNjgyOWQ1ODdhMWQ0YTVhOGZiNGNiNzU0Iiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NDc1NzIxNDEsImV4cCI6MTc0NzU3NTc0MX0.Yjuh0vl9lmPmAvZWEt4PxTeBKudWqFVX4Z5jBDXEwwo
-@tokenUser2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQG5leG9uLmNvbSIsInN1YiI6IjY4MjlkNWMzYTFkNGE1YThmYjRjYjc1YSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTcyMTY3LCJleHAiOjE3NDc1NzU3Njd9.KVOC4yt8uwPsWX6aWo9rrJssUjY8ctdvOsO4BVZeivY
-@eventId = 6829d60304b9c52e84610802
+@tokenAdmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG5leG9uLmNvbSIsInN1YiI6IjY4MmEyMDNmMjIwZDkzY2UwOTA2MzJlYyIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc0NzU5MTk2NywiZXhwIjoxNzQ3NTk1NTY3fQ.N4_J8G2G8PgX1_UCqY-wnImgMGCJN7fRHjtQ7d1Kb1I
+@tokenUser1 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQG5leG9uLmNvbSIsInN1YiI6IjY4MmEyMDQ4MjIwZDkzY2UwOTA2MzJmMiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTkxOTgzLCJleHAiOjE3NDc1OTU1ODN9.8hI5Y-YGK1nVizWByNO1B_MR_QDtiCIl9z_VHB0-NDk
+@tokenUser2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIyQG5leG9uLmNvbSIsInN1YiI6IjY4MmEyMDQyMjIwZDkzY2UwOTA2MzJlZiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzQ3NTkxOTk3LCJleHAiOjE3NDc1OTU1OTd9.Rp8bZ59rkik9shHEGAtE9HvyHad2oYK4w1jfoq-N6Us
+@eventId = 682a2197e2c749b81515193c
 
 ### 1. 사용자 전체 조회
 GET {{baseUrl}}/auth/users/
 Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
-### 1. 사용자 생성 테스트
+### 1-1. 사용자 생성(USER)
 POST {{baseUrl}}/auth/users/
 Content-Type: application/json
 
 {
     "role": "USER",
-    "email": "user2@nexon.com",
-    "password": "user2",
-    "name": "유저2",
+    "email": "user1@nexon.com",
+    "password": "user1",
+    "name": "유저1",
     "phone": "010-1234-5678",
     "age": 25
 }
 
-### 2. 로그인
+### 1-2. 사용자 생성(ADMIN)
+POST {{baseUrl}}/auth/users/
+Content-Type: application/json
+
+{
+    "role": "ADMIN",
+    "email": "admin@nexon.com",
+    "password": "admin",
+    "name": "admin",
+    "phone": "010-8765-4321",
+    "age": 20
+}
+
+
+### 2-1. 로그인 - USER
 POST {{baseUrl}}/auth/users/login
 Content-Type: application/json
 
 {
-    "email": "admin@enexon.com",
-    "password": "admin"
+    "email": "user1@nexon.com",
+    "password": "user1"
 }
 
-### 2. 로그인 - 어드민
+### 2-2. 로그인 - ADMIN
 POST {{baseUrl}}/auth/users/login
 Content-Type: application/json
 
 {
-    "email": "admin@example.com",
+    "email": "admin@nexon.com",
     "password": "admin"
 }
 
+### 3-1. 캐릭터 전체 정보 조회
+GET {{baseUrl}}/auth/characters
 
-### 3. 접근 권한 확인
-GET {{baseUrl}}/auth/admin
-Authorization: Bearer {{tokenUser1}}
+### 3-2. 캐릭터 생성
+POST {{baseUrl}}/auth/characters
+Authorization: Bearer {{tokenUser2}}
 Content-Type: application/json
 
 {
-
+  "nickname": "ayo1"
 }
 
-### 3. 특정 사용자 조회
-# {userId} -> user 'user _id'
-GET {{baseUrl}}/auth/users/{{userId}}
+### 3-3. 캐릭터 레벨 설정
+PATCH {{baseUrl}}/auth/characters/nickname/tester2
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
 
+{
+  "level": 50,
+  "arcaneForce": 900
+}
 
-### 4. event 조회
+### 4-1. event 조회
 GET {{baseUrl}}/event/admin/
 Authorization: Bearer {{tokenAdmin}}
 
-### event 등록
+### 4-2. event 등록
 POST {{baseUrl}}/event/admin/add
 Content-Type: application/json
 Authorization: Bearer {{tokenAdmin}}
@@ -75,36 +96,7 @@ Authorization: Bearer {{tokenAdmin}}
   "deadline": "2024-06-01T23:59:59.000Z"
 }
 
-### 7. 이벤트 삭제
-DELETE {{baseUrl}}/event/admin/{{eventId}}
-Authorization: Bearer {{tokenAdmin}}
-
-### 보상 신청 목록 확인
-GET {{baseUrl}}/event/reward
-Authorization: Bearer {{tokenAdmin}}
-
-### 이벤트 보상 신청
-POST {{baseUrl}}/event/reward
-Authorization: Bearer {{tokenUser2}}
-Content-Type: application/json
-
-{
-  "nickname": "tester2",
-  "title": "2025 대규모 업데이트",
-  "subTitle": "레벨 올리기!"
-}
-
-### 5. event에 보상 등록
-POST {{baseUrl}}/event/admin/addReward/{{eventId}}
-Authorization: Bearer {{tokenAdmin}}
-Content-Type: application/json
-
-{
-    "rewardNm": "코어젬스톤",
-    "rewardCount": 10
-}
-
-### 이벤트에 보상 추가 (title, subTitle로)
+### 4-3 이벤트에 보상 추가 (title, subTitle로)
 POST {{baseUrl}}/event/admin/addRewardByTitle
 Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
@@ -116,39 +108,32 @@ Content-Type: application/json
   "rewardCount": 2
 }
 
-### 캐릭터 전체 정보 조회
-GET {{baseUrl}}/auth/characters
+### 5-1.보상 신청 목록 확인
+GET {{baseUrl}}/event/reward
+Authorization: Bearer {{tokenAdmin}}
 
-### 캐릭터 생성
-POST {{baseUrl}}/auth/characters
+### 5-2.이벤트 보상 신청
+POST {{baseUrl}}/event/reward
 Authorization: Bearer {{tokenUser2}}
 Content-Type: application/json
 
 {
-  "nickname": "tester2"
+  "nickname": "ayo1",
+  "title": "2025 대규모 업데이트",
+  "subTitle": "레벨 올리기!"
 }
 
-### 캐릭터 레벨 설정
-PATCH {{baseUrl}}/auth/characters/nickname/tester2
-Authorization: Bearer {{tokenAdmin}}
-Content-Type: application/json
-
-{
-  "level": 50,
-  "arcaneForce": 900
-}
-
-### 보상 부여
+### 6-1. 보상 부여
 POST {{baseUrl}}/event/reward/check
 Authorization: Bearer {{tokenAdmin}}
 Content-Type: application/json
 
 {
-  "nickname": "tester2",
+  "nickname": "ayo1",
   "title": "2025 대규모 업데이트",
   "subTitle": "레벨 올리기!"
 }
 
-### 내 이벤트 가져오기
+### 6-2. 내 이벤트 가져오기
 GET {{baseUrl}}/event/reward/my
-Authorization: Bearer {{tokenUser1}}
+Authorization: Bearer {{tokenUser2}}

@@ -21,9 +21,13 @@ import { RolesGuard } from '../../auth/guards/roles.guard';
 export class GatewayController {
   constructor(private readonly httpService: HttpService) {}
 
+  AUTHSERVER = 'http://auth_server:3002';
+  EVENTSERVER = 'http://event_server:3003';
+
   @All('auth/users/*')
   async proxyAuthServer(@Req() req: Request, @Res() res: Response) {
-    const url = `http://localhost:3002${req.url}`; // AuthServer 주소
+    //const url = `http://localhost:3002${req.url}`; // AuthServer 주소
+    const url = `${this.AUTHSERVER}${req.url}`; // AuthServer 주소
     const method = req.method.toLowerCase();
     try {
       const response = await lastValueFrom(
@@ -45,7 +49,7 @@ export class GatewayController {
   @Roles('ADMIN')
   @All('event/admin/*')
   async proxyEventAdminServer(@Req() req: Request, @Res() res: Response) {
-    const url = `http://localhost:3003${req.url}`;
+    const url = `${this.EVENTSERVER}${req.url}`;
     const method = req.method.toLowerCase();
     try {
       const response = await lastValueFrom(
@@ -65,7 +69,7 @@ export class GatewayController {
 
   @Get('auth/characters')
   async proxyGetAllCharacters(@Req() req: Request, @Res() res: Response) {
-    const url = `http://localhost:3002${req.url}`;
+    const url = `${this.AUTHSERVER}${req.url}`;
     try {
       const response = await lastValueFrom(this.httpService.get(url));
       res.status(response.status).json(response.data);
@@ -81,7 +85,7 @@ export class GatewayController {
   async proxyCreateCharacter(@Req() req: any, @Res() res: Response) {
     const userId = req.user.email;
     const { nickname } = req.body;
-    const url = `http://localhost:3002${req.url}`;
+    const url = `${this.AUTHSERVER}${req.url}`;
 
     // AuthServer로 보낼 데이터
     const data = { userId, nickname };
@@ -101,7 +105,7 @@ export class GatewayController {
   @Roles('ADMIN', 'AUDITOR')
   @Get('event/reward')
   async proxyGetAllRewardRequests(@Req() req: Request, @Res() res: Response) {
-    const url = 'http://localhost:3003/maple/event/reward';
+    const url = `${this.EVENTSERVER}/maple/event/reward`;
     try {
       const response = await lastValueFrom(this.httpService.get(url));
       res.status(response.status).json(response.data);
@@ -121,9 +125,7 @@ export class GatewayController {
     @Body() body: { level?: number; arcaneForce?: number },
     @Res() res: Response,
   ) {
-    const url = `http://localhost:3002/maple/auth/characters/nickname/${encodeURIComponent(
-      nickname,
-    )}`;
+    const url = `${this.AUTHSERVER}/maple/auth/characters/nickname/${encodeURIComponent(nickname)}`;
     try {
       const response = await lastValueFrom(this.httpService.patch(url, body));
       res.status(response.status).json(response.data);
@@ -141,7 +143,7 @@ export class GatewayController {
     const email = req.user.email;
     const { nickname, title, subTitle } = req.body;
 
-    const charUrl = `http://localhost:3002/maple/auth/characters/user/${encodeURIComponent(
+    const charUrl = `${this.AUTHSERVER}/maple/auth/characters/user/${encodeURIComponent(
       email,
     )}/nickname/${encodeURIComponent(nickname)}`;
     let character;
@@ -156,7 +158,7 @@ export class GatewayController {
     }
 
     //  이벤트 정보 조회
-    const eventUrl = `http://localhost:3003/maple/event/admin?title=${encodeURIComponent(
+    const eventUrl = `${this.EVENTSERVER}/maple/event/admin?title=${encodeURIComponent(
       title,
     )}&subTitle=${encodeURIComponent(subTitle)}`;
     let event;
@@ -184,7 +186,7 @@ export class GatewayController {
     }
 
     // Reward 서버로 보상 요청 저장
-    const rewardUrl = 'http://localhost:3003/maple/event/reward';
+    const rewardUrl = `${this.EVENTSERVER}/maple/event/reward`;
     const data = { nickname, title, subTitle, conditionName, conditionValue };
     try {
       const response = await lastValueFrom(this.httpService.post(rewardUrl, data));
@@ -204,7 +206,7 @@ export class GatewayController {
     const { nickname, title, subTitle } = req.body;
 
     // Reward 서버에서 해당 보상 신청 찾기
-    const rewardUrl = `http://localhost:3003/maple/event/reward`;
+    const rewardUrl = `${this.EVENTSERVER}/maple/event/reward`;
     let reward;
     try {
       const rewardResponse = await lastValueFrom(
@@ -237,7 +239,7 @@ export class GatewayController {
     }
 
     // Event 서버에서 해당 이벤트 정보 찾기
-    const eventUrl = `http://localhost:3003/maple/event/admin?title=${encodeURIComponent(
+    const eventUrl = `${this.EVENTSERVER}/maple/event/admin?title=${encodeURIComponent(
       title,
     )}&subTitle=${encodeURIComponent(subTitle)}`;
     let event;
@@ -262,7 +264,7 @@ export class GatewayController {
     // 조건 만족 시 rewarded 업데이트
     if (conditionValue >= destination) {
       try {
-        const patchUrl = `http://localhost:3003/maple/event/reward/${reward._id}`;
+        const patchUrl = `${this.EVENTSERVER}/maple/event/reward/${reward._id}`;
         const patchResponse = await lastValueFrom(
           this.httpService.patch(patchUrl, { rewarded: true }),
         );
@@ -285,9 +287,7 @@ export class GatewayController {
     const email = req.user.email;
 
     // 캐릭터 서버에서 내 캐릭터 목록 조회
-    const charUrl = `http://localhost:3002/maple/auth/characters/userId/${encodeURIComponent(
-      email,
-    )}`;
+    const charUrl = `${this.AUTHSERVER}/maple/auth/characters/userId/${encodeURIComponent(email)}`;
     let characters;
     try {
       const charResponse = await lastValueFrom(this.httpService.get(charUrl));
@@ -303,7 +303,7 @@ export class GatewayController {
     const nicknames = characters.map((c: any) => c.nickname);
     console.log(nicknames);
     // Reward 서버에서 내 캐릭터 닉네임으로 신청한 reward 목록 조회
-    const rewardUrl = `http://localhost:3003/maple/event/reward/nickname`;
+    const rewardUrl = `${this.EVENTSERVER}/maple/event/reward/nickname`;
     try {
       console.log('te');
       const query = nicknames.map(n => `nickname=${encodeURIComponent(n)}`).join('&');
