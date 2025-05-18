@@ -1,0 +1,63 @@
+@baseUrl = http://localhost:3003/maple/event
+@eventId = 6829c4c919cffe750b704337
+
+### 1. 테스트
+POST {{baseUrl}}
+Content-Type: application/json
+
+### 2. 이벤트 등록
+POST {{baseUrl}}/admin/add
+Content-Type: application/json
+
+{
+  "title": "2025 대규모 업데이트",
+  "subTitle": "레벨 올리기!",
+  "option": "레벨",
+  //"reward": "극성비",
+  "eventLevel": 0,
+  "destination": 100,
+  "description": "100레벨을 달성하라!",
+  "achievements": [],
+  "deadline": "2024-06-01T23:59:59.000Z"
+}
+
+### 3. 이벤트 전체 조회
+GET {{baseUrl}}/admin
+
+
+### 4. 이벤트 개별 조회
+GET {{baseUrl}}/{{eventId}}
+
+### 5. 이벤트에 유저 추가
+POST {{baseUrl}}/addUser
+Content-Type: application/json
+
+{
+  "title": "2025 대규모 업데이트",
+  "userId": "newUser12",
+  "userCharId" : "아무개5"
+}
+
+###6.이벤트 수정
+PATCH {{baseUrl}}/이벤트ID
+Content-Type: application/json
+
+{
+  "title": "수정된 이벤트 제목",
+  "reward": "2000 포인트"
+}
+
+### 7. 이벤트 삭제
+DELETE {{baseUrl}}/admin/{{eventId}}
+
+### 8. 이벤트에 보상 추가
+POST {{baseUrl}}/addReward/{{eventId}}
+Content-Type: application/json
+
+{
+  "rewardNm": "코어젬스톤",
+  "rewardCount": 2
+}
+
+### 9. 이벤트 보상 조회
+GET {{baseUrl}}/rewards/{{eventId}}

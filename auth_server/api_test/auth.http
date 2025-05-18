@@ -1,8 +1,8 @@
-@baseUrl = http://localhost:3001
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoiNjgyNWQ3MWZmMjQ2NjcyNmFjNDk0MjIyIiwiaWF0IjoxNzQ3MzExNTM0LCJleHAiOjE3NDczMTUxMzR9.et-EOrUBqltgVFvQ4YDwlJ8ZGr-lnzEcGj57qWkOJzM
+@baseUrl = http://localhost:3002/maple
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwic3ViIjoiNjgyNWQ3MWZmMjQ2NjcyNmFjNDk0MjIyIiwiaWF0IjoxNzQ3MzE4MTc3LCJleHAiOjE3NDczMjE3Nzd9.3br5yPYC_jb5V3fwDmKgppwNA3Nyzfp4GfLioz45gjU
 
 ### 1. 로그인
-POST {{baseUrl}}/auth/login
+POST {{baseUrl}}/auth/enter/login
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### 3. 접근 권한 확인
-GET {{baseUrl}}/admin
+GET {{baseUrl}}/auth/admin
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

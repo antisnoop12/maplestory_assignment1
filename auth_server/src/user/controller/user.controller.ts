@@ -8,13 +8,21 @@ import {
   Param,
   HttpException,
   HttpStatus,
+  UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from '@user/service/user.service';
 import { UserDto } from '@user/dto/user.dto';
+import { AuthService } from '@auth/service/auth.service';
+import { Roles } from '../role/roles.decorator';
 
-@Controller('users') // 'users' 경로로 시작하는 엔드포인트 처리
+@Controller('maple/auth/users') // 'users' 경로로 시작하는 엔드포인트 처리
+//@UseGuards(JwtAuthGuard, RolesGuard)
 export class UsersController {
-  constructor(private readonly usersService: UserService) {}
+  constructor(
+    private readonly usersService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   // 새 사용자 생성 (회원가입)
   @Post()
@@ -61,4 +69,20 @@ export class UsersController {
       throw new HttpException('사용자 삭제 실패', HttpStatus.BAD_REQUEST);
     }
   }
+
+  // 로그인
+  @Post('login')
+  async login(@Body('email') email: string, @Body('password') password: string) {
+    const user = await this.authService.validateUser(email, password);
+    if (!user) {
+      throw new UnauthorizedException('이메일 또는 비밀번호가 올바르지 않습니다.');
+    }
+    return this.authService.login(email, password);
+  }
+
+  // @Get()
+  // @Roles('ADMIN')
+  // checkAdmin() {
+  //   return '운영자 확인';
+  // }
 }

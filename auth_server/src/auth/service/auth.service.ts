@@ -21,7 +21,7 @@ export class AuthService {
     if (!user || !(await PasswordUtil.compare(password, user.password))) {
       throw new UnauthorizedException('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
-    const payload = { email: user.email, sub: user._id };
+    const payload = { email: user.email, sub: user._id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
       user: {

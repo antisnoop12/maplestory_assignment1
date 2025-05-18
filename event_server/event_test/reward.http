@@ -1,0 +1,8 @@
+@baseUrl = http://localhost:3003/maple/event/reward
+@eventId = 6829cd5a95aef7256fe954a0
+
+###
+GET {{baseUrl}}
+
+###
+DELETE {{baseUrl}}/{{eventId}}

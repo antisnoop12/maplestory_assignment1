@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3001
+@baseUrl = http://localhost:3002/maple
 @userId = 6825d71ff2466726ac494222
 ### 1. 사용자 생성 테스트
 POST {{baseUrl}}/users
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 // admin 계정: admin@example.com | admin
 ### 2. 모든 사용자 조회
-GET {{baseUrl}}/users
+GET {{baseUrl}}/auth/users
 
 ### 3. 특정 사용자 조회
 # {userId} -> user 'user _id'
@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### 5. 사용자 삭제
-DELETE {{baseUrl}}/users/6825d6baf2466726ac49421c
+DELETE {{baseUrl}}/auth/users/6825d71ff2466726ac494222
 
 ### 6. 잘못된 이메일 형식으로 사용자 생성 테스트
 POST {{baseUrl}}/users
@@ -53,4 +53,13 @@ Content-Type: application/json
     "password": "test1234",
     "name": "테스트 유저3",
     "age": 13
+}
+
+### 2. 로그인
+POST {{baseUrl}}/auth/users/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin"
 }
