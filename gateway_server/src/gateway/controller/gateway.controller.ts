@@ -302,7 +302,6 @@ export class GatewayController {
     // 캐릭터 닉네임 목록 추출
     const nicknames = characters.map((c: any) => c.nickname);
     console.log(nicknames);
-    // Reward 서버에서 내 캐릭터 닉네임으로 신청한 reward 목록 조회
     const rewardUrl = `${this.EVENTSERVER}/maple/event/reward/nickname`;
     try {
       console.log('te');
