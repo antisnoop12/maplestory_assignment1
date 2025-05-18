@@ -61,6 +61,24 @@ export class EventController {
     return rewards;
   }
 
+  // 이벤트에 보상 추가 (title, subTitle로)
+  @Post('admin/addRewardByTitle')
+  async addRewardToEventByTitle(
+    @Body() body: { title: string; subTitle: string; rewardNm: string; rewardCount: number },
+  ) {
+    const { title, subTitle, rewardNm, rewardCount } = body;
+    const updatedEvent = await this.eventService.addRewardToEventByTitle(
+      title,
+      subTitle,
+      rewardNm,
+      rewardCount,
+    );
+    if (!updatedEvent) {
+      return { message: 'Event not found' };
+    }
+    return updatedEvent;
+  }
+
   // 이벤트 보상 요구 확인
   // @Post('admin/achievements')
   // async getAchievementsByTitleAndSubTitle(@Body() body: { title: string; subTitle: string }) {

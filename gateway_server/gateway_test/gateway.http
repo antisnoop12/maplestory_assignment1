@@ -104,7 +104,17 @@ Content-Type: application/json
     "rewardCount": 10
 }
 
+### 이벤트에 보상 추가 (title, subTitle로)
+POST {{baseUrl}}/event/admin/addRewardByTitle
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
 
+{
+  "title": "2025 대규모 업데이트",
+  "subTitle": "레벨 올리기!",
+  "rewardNm": "심볼",
+  "rewardCount": 2
+}
 
 ### 캐릭터 전체 정보 조회
 GET {{baseUrl}}/auth/characters

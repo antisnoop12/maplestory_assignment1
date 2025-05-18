@@ -97,6 +97,28 @@ export class EventService {
     return event.reward;
   }
 
+  // 이벤트에 보상 추가 (title, subTitle로)
+  async addRewardToEventByTitle(
+    title: string,
+    subTitle: string,
+    rewardNm: string,
+    rewardCount: number,
+  ): Promise<Event | null> {
+    const event = await this.eventModel.findOne({ title, subTitle }).exec();
+    if (!event) return null;
+
+    const exists = event.reward.some(r => r.rewardNm === rewardNm);
+    if (exists) {
+      event.reward = event.reward.map(r => (r.rewardNm === rewardNm ? { ...r, rewardCount } : r));
+      await event.save();
+      return event;
+    }
+
+    event.reward.push({ rewardNm, rewardCount });
+    await event.save();
+    return event;
+  }
+
   // 이벤트의 achievements 조회 (title, subTitle로)
   // async getAchievementsByTitleAndSubTitle(title: string, subTitle: string): Promise<any[] | null> {
   //   const event = await this.eventModel.findOne({ title, subTitle }).exec();

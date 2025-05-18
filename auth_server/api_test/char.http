@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3002/maple/auth/characters
 @userId = user123
+
 ### 캐릭터 생성 (닉네임 중복 불가)
 POST {{baseUrl}}
 Content-Type: application/json
